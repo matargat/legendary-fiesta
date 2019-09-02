@@ -29286,8 +29286,8 @@ var Dish = function Dish(props) {
     return _react2.default.createElement(
         'div',
         null,
-        courses.map(function (course) {
-            return _react2.default.createElement(_Course2.default, { title: course.title, about: course.about, price: course.price });
+        courses.map(function (course, i) {
+            return _react2.default.createElement(_Course2.default, { title: course.title, about: course.about, price: course.price, key: i });
         })
     );
 };
@@ -29334,7 +29334,7 @@ var _Comment2 = _interopRequireDefault(_Comment);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
-    return _react2.default.createElement(
+    return props.title === "column_break" ? _react2.default.createElement('div', null) : _react2.default.createElement(
         'div',
         null,
         _react2.default.createElement(
@@ -29364,7 +29364,7 @@ exports.default = function (props) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+        value: true
 });
 
 var _react = __webpack_require__(1);
@@ -29374,29 +29374,55 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
-    return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-            'form',
-            null,
-            _react2.default.createElement(
-                'input',
+        return _react2.default.createElement(
+                "div",
                 null,
-                props.name
-            ),
-            _react2.default.createElement(
-                'input',
-                null,
-                props.mail
-            ),
-            _react2.default.createElement(
-                'input',
-                null,
-                props.comment
-            )
-        )
-    );
+                _react2.default.createElement(
+                        "form",
+                        null,
+                        _react2.default.createElement(
+                                "label",
+                                { htmlFor: "name" },
+                                "Nafn:"
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "input",
+                                { id: "name" },
+                                props.name
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "label",
+                                { htmlFor: "mail" },
+                                "Netfang:"
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "input",
+                                { id: "mail" },
+                                props.mail
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "label",
+                                { htmlFor: "comment" },
+                                "Athugasemd:"
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "input",
+                                { id: "comment" },
+                                props.comment
+                        ),
+                        _react2.default.createElement("br", null),
+                        _react2.default.createElement(
+                                "button",
+                                null,
+                                "Senda"
+                        )
+                )
+        );
 };
 
 /***/ }),

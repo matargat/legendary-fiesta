@@ -13,15 +13,42 @@ const fetchData = () => {
         .then(r => r.json())
         .then(json => {
             menuItems = [...json.acf.column_2, ...json.acf.column_3, ...json.acf.column_4, ...json.acf.column_5,];
-            console.log(menuItems);
+            // console.log(menuItems);
 
-            fs.writeFile('./rettir', JSON.stringify(menuItems), () => {
-                console.log("menu er komið inn í rettir");
+            fs.readFile('./rettir', 'utf8', (err, data)=>{
+                // console.log(data);
+                //setjum JSON.parse til þess að fá json formatti en ekki streng.
+                const dataArr = JSON.parse(data); 
+                const oldCourse = []; 
+
+                dataArr.map((fileCourse)=>{
+                    
+                    const match =  menuItems.reduce((sum, apiCourse)=>{
+                        if(fileCourse.title === apiCourse.title){
+                            return sum+1
+                        }
+                        
+                        else{
+                            return sum+0
+                        }
+                    },0)
+                    
+                    if(!match){
+                        fs.writeFile('./archive', JSON.stringify(fileCourse), ()=>{
+                            console.log(fileCourse +" going to archive");
+                        })
+                    }
+                })
+                fs.writeFile('./rettir', JSON.stringify(menuItems), () => {
+                    console.log("menu er komið inn í rettir");
+                })
+
             })
         })
 }
 setInterval(() => fetchData(), 86400000);
 fetchData();
+
 
 app.get("/menu", (req, res) => {
     res.send(menuItems);
