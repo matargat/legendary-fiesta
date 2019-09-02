@@ -29323,6 +29323,14 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _Form = __webpack_require__(14);
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _Comment = __webpack_require__(15);
+
+var _Comment2 = _interopRequireDefault(_Comment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
@@ -29343,9 +29351,60 @@ exports.default = function (props) {
             'p',
             null,
             props.price
+        ),
+        _react2.default.createElement(_Form2.default, null)
+    );
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = function (props) {
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            'form',
+            null,
+            _react2.default.createElement(
+                'input',
+                null,
+                props.name
+            ),
+            _react2.default.createElement(
+                'input',
+                null,
+                props.mail
+            ),
+            _react2.default.createElement(
+                'input',
+                null,
+                props.comment
+            )
         )
     );
 };
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /***/ })
 /******/ ]);
