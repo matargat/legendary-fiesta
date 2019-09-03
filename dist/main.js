@@ -29287,7 +29287,7 @@ var Dish = function Dish(props) {
         'div',
         null,
         courses.map(function (course, i) {
-            return _react2.default.createElement(_Course2.default, { title: course.title, about: course.about, price: course.price, key: i });
+            return _react2.default.createElement(_Course2.default, { title: course.title, about: course.about, price: course.price, key: i, token: courses[0].token });
         })
     );
 };
@@ -29352,7 +29352,7 @@ exports.default = function (props) {
             null,
             props.price
         ),
-        _react2.default.createElement(_Form2.default, null)
+        _react2.default.createElement(_Form2.default, { token: props.token })
     );
 };
 
@@ -29364,8 +29364,12 @@ exports.default = function (props) {
 
 
 Object.defineProperty(exports, "__esModule", {
-        value: true
+    value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _react = __webpack_require__(1);
 
@@ -29373,57 +29377,80 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = function (props) {
-        return _react2.default.createElement(
-                "div",
-                null,
-                _react2.default.createElement(
-                        "form",
-                        null,
-                        _react2.default.createElement(
-                                "label",
-                                { htmlFor: "name" },
-                                "Nafn:"
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "input",
-                                { id: "name" },
-                                props.name
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "label",
-                                { htmlFor: "mail" },
-                                "Netfang:"
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "input",
-                                { id: "mail" },
-                                props.mail
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "label",
-                                { htmlFor: "comment" },
-                                "Athugasemd:"
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "input",
-                                { id: "comment" },
-                                props.comment
-                        ),
-                        _react2.default.createElement("br", null),
-                        _react2.default.createElement(
-                                "button",
-                                null,
-                                "Senda"
-                        )
-                )
-        );
+var Form = function Form(props) {
+    var _useState = (0, _react.useState)({ name: '', email: '', comment: '', rating: '' }),
+        _useState2 = _slicedToArray(_useState, 2),
+        comment = _useState2[0],
+        setComment = _useState2[1];
+
+    var publish = function publish(e) {
+        e.preventDefault();
+        fetch('http://localhost:3000', {
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(comment)
+        }).then(function (result) {
+            console.log(result);
+        });
+    };
+
+    var getName = function getName(e) {
+        setComment(_extends({}, comment, { name: e.target.value }));
+    };
+    var getEmail = function getEmail(e) {
+        setComment(_extends({}, comment, { email: e.target.value }));
+    };
+    var getComment = function getComment(e) {
+        setComment(_extends({}, comment, { comment: e.target.value }));
+    };
+    // const getRating = e => {
+    //     setComment({...comment, rating: e.target.value})
+    // }
+
+
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            'form',
+            { action: '/', method: 'post', onSubmit: publish },
+            _react2.default.createElement('input', { type: 'hidden', name: 'token', value: props.token }),
+            _react2.default.createElement(
+                'label',
+                { htmlFor: 'name' },
+                'Nafn:'
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('input', { name: 'name', id: 'name', type: 'text', onKeyUp: getName }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+                'label',
+                { htmlFor: 'email' },
+                'Netfang:'
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('input', { name: 'email', id: 'email', type: 'text', onKeyUp: getEmail }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+                'label',
+                { htmlFor: 'comment' },
+                'Athugasemd:'
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement('input', { name: 'comment', id: 'comment', type: 'text', onKeyUp: getComment }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+                'button',
+                { type: 'submit' },
+                'Senda'
+            )
+        )
+    );
 };
+
+exports.default = Form;
 
 /***/ }),
 /* 15 */

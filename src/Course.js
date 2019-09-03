@@ -9,5 +9,5 @@ props.title === "column_break"?
     <h2>{props.title}</h2>
     <p>{props.about}</p>
     <p>{props.price}</p>
-    <Form />
+    <Form token={props.token}/>
 </div>

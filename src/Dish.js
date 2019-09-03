@@ -8,7 +8,7 @@ const Dish = (props)=> {
     return (
         <div>
             {courses.map((course, i)=>{
-                return <Course title={course.title} about={course.about} price={course.price} key={i}/>
+                return <Course title={course.title} about={course.about} price={course.price} key={i} token={courses[0].token}/>
 
             })}
             {/* <Comment /> */}

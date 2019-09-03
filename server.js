@@ -4,8 +4,21 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import Dish from './src/Dish';
 import fetch from 'isomorphic-fetch';
+import csurf from 'csurf';
+import session from 'express-session';
+import bodyParser from 'body-parser'
 
 const app = express();
+const csrfProtection = csurf({ cookie: false })
+
+app.use(express.static('./dist'));
+app.use(
+    bodyParser.urlencoded({extended:false})
+);
+app.use(session({
+    secret: 'Kaffi er gott'
+  }))
+
 let menuItems = [];
 
 const fetchData = () => {
@@ -14,28 +27,27 @@ const fetchData = () => {
         .then(json => {
             menuItems = [...json.acf.column_2, ...json.acf.column_3, ...json.acf.column_4, ...json.acf.column_5,];
             // console.log(menuItems);
-
-            fs.readFile('./rettir', 'utf8', (err, data)=>{
+            fs.readFile('./rettir', 'utf8', (err, data) => {
                 // console.log(data);
-                //setjum JSON.parse til þess að fá json formatti en ekki streng.
-                const dataArr = JSON.parse(data); 
-                const oldCourse = []; 
+                //setjum JSON.parse til þess að fá json format en ekki streng.
+                const dataArr = JSON.parse(data);
+                const oldCourse = [];
 
-                dataArr.map((fileCourse)=>{
-                    
-                    const match =  menuItems.reduce((sum, apiCourse)=>{
-                        if(fileCourse.title === apiCourse.title){
-                            return sum+1
+                dataArr.map((fileCourse) => {
+
+                    const match = menuItems.reduce((sum, apiCourse) => {
+                        if (fileCourse.title === apiCourse.title) {
+                            return sum + 1
                         }
-                        
-                        else{
-                            return sum+0
+
+                        else {
+                            return sum + 0
                         }
-                    },0)
-                    
-                    if(!match){
-                        fs.writeFile('./archive', JSON.stringify(fileCourse), ()=>{
-                            console.log(fileCourse +" going to archive");
+                    }, 0)
+
+                    if (!match) {
+                        fs.writeFile('./archive', JSON.stringify(fileCourse), () => {
+                            console.log(fileCourse + " going to archive");
                         })
                     }
                 })
@@ -54,12 +66,13 @@ app.get("/menu", (req, res) => {
     res.send(menuItems);
 })
 
-app.get("/", (req, res) => {
+app.get("/", csrfProtection, (req, res) => {
+    menuItems[0].token = req.csrfToken()
     fetch("http://localhost:3000/menu")
-    .then(r=>r.json())
-    .then(json=> {
-        const markup = ReactDOMServer.renderToString(<Dish jsonData={json}/>)
-        res.send(`
+        .then(r => r.json())
+        .then(json => {
+            const markup = ReactDOMServer.renderToString(<Dish jsonData={json} />)
+            res.send(`
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -70,37 +83,38 @@ app.get("/", (req, res) => {
             <body>
                 <div id="main">${markup}</div>
                 <script src="dist/main.js"></script>
+                
             </body>
             </html>`
-        );
-    }
-        
-    )
-
-
-
-
-    // const appComponent = ReactDOMserver.renderToString(<App menu={menuItems}/>);
-    // fs.readFile('./index.html', 'utf-8', (err, data) => {
-    //     const responseStr = data.replace('<div id="main"></div>', `<div id="main">${appComponent}</div>`);
-    //     res.send(responseStr);
-    // })
+            );
+        }
+        )
 })
 
-// app.get("/test", (req, res) => {
-//     fs.readFile('./index.html', 'utf-8', (err, data) => {
+// // CSURF
 
-//         fs.readFile('./rettir', 'utf-8', (err, data2) => {
-//             const responseStr = data.replace('<div id="main"></div>',
-//                 `<div id="main">
-//                 <h2>${JSON.parse(data2)[0].title}</h2>
-//                 <p>${JSON.parse(data2)[0].about}</p>
-//                 <p>${JSON.parse(data2)[0].price}</p>
-//             </div > `
-//         );
-//         res.send(responseStr);
-//         })
-//     })
+// // setup route middlewares
+// const csrfProtection = csrf({ cookie: true })
+// const parseForm = bodyParser.urlencoded({ extended: false })
+
+// // parse cookies
+// // we need this because "cookie" is true in csrfProtection
+// app.use(cookieParser())
+
+// app.get('/form', csrfProtection, function (req, res) {
+//   // pass the csrfToken to the view
+//   res.send('send', { csrfToken: req.csrfToken() })
 // })
+
+// app.post('/process', parseForm, csrfProtection, function (req, res) {
+//   res.send('data is being processed')
+// })
+
+app.post('/', (req, res) => {
+    fs.appendFile('./comments', JSON.stringify(req.body), (err) => {
+        if (err) throw err;
+        console.log('Comment added')
+    })
+})
 
 app.listen(3000, () => console.log("listening to port 3000")); 
