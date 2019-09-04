@@ -2,11 +2,12 @@ import express from 'express';
 import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Dish from './src/Dish';
 import fetch from 'isomorphic-fetch';
 import csurf from 'csurf';
 import session from 'express-session';
 import bodyParser from 'body-parser'
+import Dish from './src/Dish';
+import Details from './src/Details';
 
 const app = express();
 const csrfProtection = csurf({ cookie: false })
@@ -31,7 +32,6 @@ const fetchData = () => {
                 // console.log(data);
                 //setjum JSON.parse til þess að fá json format en ekki streng.
                 const dataArr = JSON.parse(data);
-                const oldCourse = [];
 
                 dataArr.map((fileCourse) => {
 
@@ -91,30 +91,55 @@ app.get("/", csrfProtection, (req, res) => {
         )
 })
 
-// // CSURF
 
-// // setup route middlewares
-// const csrfProtection = csrf({ cookie: true })
-// const parseForm = bodyParser.urlencoded({ extended: false })
+app.post('/', (req, res) => { 
+    fs.readFile('./comments', 'utf8', (err, data)=>{
+        const allComments = JSON.parse(data); 
+        allComments.push(req.body);
 
-// // parse cookies
-// // we need this because "cookie" is true in csrfProtection
-// app.use(cookieParser())
-
-// app.get('/form', csrfProtection, function (req, res) {
-//   // pass the csrfToken to the view
-//   res.send('send', { csrfToken: req.csrfToken() })
-// })
-
-// app.post('/process', parseForm, csrfProtection, function (req, res) {
-//   res.send('data is being processed')
-// })
-
-app.post('/', (req, res) => {
-    fs.appendFile('./comments', JSON.stringify(req.body), (err) => {
-        if (err) throw err;
-        console.log('Comment added')
+        fs.writeFile('./comments', JSON.stringify(allComments), (err) => {
+            if (err) throw err;
+            console.log('Comment added')
+        }) 
     })
+    
+})
+
+app.get('/comments/:title', (req, res) => { 
+    const selectedCourse = menuItems.filter((course)=>{
+        return course.title === req.params.title
+    })[0]
+
+    fs.readFile('./comments', 'utf8', (err, data)=>{
+        const commentsArr = JSON.parse(data);
+        // console.log(commentsArr);
+
+            const titleMatch = commentsArr.filter((comment)=>{
+                return req.params.title === comment.title
+            })
+    
+            const markup = ReactDOMServer.renderToString(<Details title={selectedCourse.title} about={selectedCourse.about} price={selectedCourse.price} token={menuItems[0].token} comments={titleMatch}/>)
+            res.send(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <div id="main">${markup}</div>
+                    <script src="dist/main.js"></script>
+                    
+                </body>
+                </html>`
+            )
+        });
+ 
+})
+
+app.get('/test/:test', (req, res)=>{
+    res.send(req.params.test)
 })
 
 app.listen(3000, () => console.log("listening to port 3000")); 

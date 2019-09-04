@@ -34,11 +34,11 @@ const Form = (props) => {
     return (
 
     <div>
-        {/* <form action="/process" method="POST" onSubmit={publish}> */}
         <form action="/" method="post" onSubmit={publish}>
         <input type="hidden" name="token" value={props.token}></input>
-        
-            {/* <input type="hidden" name="_csrf" value="{{csrfToken}}"/> */}
+
+        <input type="hidden" name="title" value={props.title}></input>
+
             <label htmlFor="name">Nafn:</label><br/>
             <input name="name" id="name" type="text" onKeyUp={getName}></input><br/>
 

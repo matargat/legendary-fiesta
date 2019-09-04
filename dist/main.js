@@ -29294,20 +29294,6 @@ var Dish = function Dish(props) {
 
 exports.default = Dish;
 
-// import React from 'react';
-
-// export default props => <h1>{props.menu.map(menuItem=><div>{menuItem.title}</div>)}</h1>;
-// {
-//     return(
-//         <div>
-//             <Dish />
-//         </div>
-//     )
-
-// }
-
-// gera componenta með propsi
-
 /***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -29351,8 +29337,7 @@ exports.default = function (props) {
             'p',
             null,
             props.price
-        ),
-        _react2.default.createElement(_Form2.default, { token: props.token })
+        )
     );
 };
 
@@ -29417,6 +29402,7 @@ var Form = function Form(props) {
             'form',
             { action: '/', method: 'post', onSubmit: publish },
             _react2.default.createElement('input', { type: 'hidden', name: 'token', value: props.token }),
+            _react2.default.createElement('input', { type: 'hidden', name: 'title', value: props.title }),
             _react2.default.createElement(
                 'label',
                 { htmlFor: 'name' },
@@ -29458,6 +29444,50 @@ exports.default = Form;
 
 "use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Comment = function Comment(props) {
+
+    return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+            'p',
+            null,
+            'Nafn:',
+            _react2.default.createElement('br', null),
+            props.name
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+            'p',
+            null,
+            'Netfang:',
+            _react2.default.createElement('br', null),
+            props.email
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+            'p',
+            null,
+            'Athugasemd:',
+            _react2.default.createElement('br', null),
+            props.comment
+        ),
+        _react2.default.createElement('br', null)
+    );
+};
+
+exports.default = Comment;
 
 /***/ })
 /******/ ]);
