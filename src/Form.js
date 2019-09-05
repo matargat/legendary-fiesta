@@ -34,7 +34,7 @@ const Form = (props) => {
     return (
 
     <div>
-        <form action="/" method="post" onSubmit={publish}>
+        <form action={"/comments/"+props.title} method="post" onSubmit={publish}>
         <input type="hidden" name="token" value={props.token}></input>
 
         <input type="hidden" name="title" value={props.title}></input>

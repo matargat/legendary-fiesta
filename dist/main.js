@@ -29400,7 +29400,7 @@ var Form = function Form(props) {
         null,
         _react2.default.createElement(
             'form',
-            { action: '/', method: 'post', onSubmit: publish },
+            { action: "/comments/" + props.title, method: 'post', onSubmit: publish },
             _react2.default.createElement('input', { type: 'hidden', name: 'token', value: props.token }),
             _react2.default.createElement('input', { type: 'hidden', name: 'title', value: props.title }),
             _react2.default.createElement(

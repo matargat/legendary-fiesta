@@ -8,6 +8,7 @@ import session from 'express-session';
 import bodyParser from 'body-parser'
 import Dish from './src/Dish';
 import Details from './src/Details';
+import {check, validationResult} from 'express-validator'; 
 
 const app = express();
 const csrfProtection = csurf({ cookie: false })
@@ -92,7 +93,17 @@ app.get("/", csrfProtection, (req, res) => {
 })
 
 
-app.post('/', (req, res) => { 
+
+app.post('/comments/:title', [
+    check('name').isLength({ min: 3 }).trim().escape().withMessage('nafn verður að vera a.m.k. 3 bókstafir'),
+    check('email').isEmail().normalizeEmail().withMessage('ógilt netfang'),
+    check('comment').isLength({ max: 500 }).withMessage('má ekki nota orðin: "..."')
+], (req, res) => { 
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() })
+    }
+
     fs.readFile('./comments', 'utf8', (err, data)=>{
         const allComments = JSON.parse(data); 
         allComments.push(req.body);
@@ -100,8 +111,36 @@ app.post('/', (req, res) => {
         fs.writeFile('./comments', JSON.stringify(allComments), (err) => {
             if (err) throw err;
             console.log('Comment added')
-        }) 
+
+            const selectedCourse = menuItems.filter((course)=>{
+                return course.title === req.params.title
+            })[0]
+        
+        
+            const titleMatch = allComments.filter((comment)=>{
+                return req.params.title === comment.title
+            })
+
+            const markup = ReactDOMServer.renderToString(<Details title={selectedCourse.title} about={selectedCourse.about} price={selectedCourse.price} token={menuItems[0].token} comments={titleMatch}/>)
+            res.send(`
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Document</title>
+                </head>
+                <body>
+                    <div id="main">${markup}</div>
+                    <script src="dist/main.js"></script>
+                    
+                </body>
+                </html>`
+            )
+        });
     })
+
+    
     
 })
 
