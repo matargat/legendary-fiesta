@@ -97,11 +97,13 @@ app.get("/", csrfProtection, (req, res) => {
 app.post('/comments/:title', [
     check('name').isLength({ min: 3 }).trim().escape().withMessage('nafn verður að vera a.m.k. 3 bókstafir'),
     check('email').isEmail().normalizeEmail().withMessage('ógilt netfang'),
-    check('comment').isLength({ max: 500 }).withMessage('má ekki nota orðin: "..."')
+    check('comment').isLength({ max: 500 }).matches(/^(?!.*(já|nei|svartur)).*$/).withMessage('má ekki nota orðin: "..."')
 ], (req, res) => { 
+    console.log("hallo");
+    
     const errors = validationResult(req)
     if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() })
+        res.status(422)
     }
 
     fs.readFile('./comments', 'utf8', (err, data)=>{
@@ -121,7 +123,7 @@ app.post('/comments/:title', [
                 return req.params.title === comment.title
             })
 
-            const markup = ReactDOMServer.renderToString(<Details title={selectedCourse.title} about={selectedCourse.about} price={selectedCourse.price} token={menuItems[0].token} comments={titleMatch}/>)
+            const markup = ReactDOMServer.renderToString(<Details errors={errors.array()} title={selectedCourse.title} about={selectedCourse.about} price={selectedCourse.price} token={menuItems[0].token} comments={titleMatch}/>)
             res.send(`
                 <!DOCTYPE html>
                 <html lang="en">

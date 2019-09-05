@@ -9,7 +9,7 @@ const Details = (props)=> {
         <div>
             
             <Course title={props.title} about={props.about} price={props.price} token={props.token}/>
-            <Form token={props.token} title={props.title} />
+            <Form token={props.token} errors={props.errors} title={props.title} />
 
             {props.comments.map((comment, i)=>{
                 return (

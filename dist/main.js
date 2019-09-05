@@ -29368,6 +29368,16 @@ var Form = function Form(props) {
         comment = _useState2[0],
         setComment = _useState2[1];
 
+    var _useState3 = (0, _react.useState)({}),
+        _useState4 = _slicedToArray(_useState3, 2),
+        emailError = _useState4[0],
+        setEmailError = _useState4[1];
+
+    var _useState5 = (0, _react.useState)({}),
+        _useState6 = _slicedToArray(_useState5, 2),
+        commentError = _useState6[0],
+        setCommentError = _useState6[1];
+
     var publish = function publish(e) {
         e.preventDefault();
         fetch('http://localhost:3000', {
@@ -29393,8 +29403,18 @@ var Form = function Form(props) {
     // const getRating = e => {
     //     setComment({...comment, rating: e.target.value})
     // }
-
-
+    console.log(emailError);
+    // if(props.errors){
+    //     props.errors.forEach((error)=>{
+    //         if(error.param === "email") {
+    //             setEmailError(error)
+    //         }
+    //         else if(error.param === "comment"){
+    //             setCommentError(error)
+    //         }
+    //     })
+    // }
+    console.log(props.errors);
     return _react2.default.createElement(
         'div',
         null,

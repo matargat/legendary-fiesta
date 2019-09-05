@@ -2,6 +2,8 @@ import React, { useState } from 'react';
  
 const Form = (props) => {
     const [comment, setComment] = useState({ name: '', email: '', comment:'', rating: '' });
+    const [emailError, setEmailError] = useState({ });
+    const [commentError, setCommentError] = useState({ });
 
     const publish = (e) => {
         e.preventDefault();
@@ -29,8 +31,18 @@ const Form = (props) => {
     // const getRating = e => {
     //     setComment({...comment, rating: e.target.value})
     // }
-
-
+    console.log(emailError);
+    // if(props.errors){
+    //     props.errors.forEach((error)=>{
+    //         if(error.param === "email") {
+    //             setEmailError(error)
+    //         }
+    //         else if(error.param === "comment"){
+    //             setCommentError(error)
+    //         }
+    //     })
+    // }
+    console.log(props.errors);
     return (
 
     <div>
@@ -45,8 +57,12 @@ const Form = (props) => {
             <label htmlFor="email">Netfang:</label><br/>
             <input name="email" id="email" type="text" onKeyUp={getEmail}></input><br/>
 
+            {/* <p>{emailError? props.error:null}</p> */}
+            
             <label htmlFor="comment">Athugasemd:</label><br/>
             <input name="comment" id="comment" type="text" onKeyUp={getComment}></input><br/>
+
+            {/* <p>{commentError? props.error:null}</p> */}
 
             <button type="submit">Senda</button>
         </form>
