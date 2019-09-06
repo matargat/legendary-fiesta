@@ -4,8 +4,8 @@ const Comment = (props)=>{
 
     return(
         <div>
-            <p>Nafn:<br/>{props.name}</p><br/>
-            <p>Netfang:<br/>{props.email}</p><br/>
+            <p>Nafn:<br/>{props.name}</p>
+            <p>Netfang:<br/>{props.email}</p>
             <p>Athugasemd:<br/>{props.comment}</p><br/>
         </div>
     )

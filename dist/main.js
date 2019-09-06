@@ -29530,7 +29530,6 @@ var Comment = function Comment(props) {
             _react2.default.createElement('br', null),
             props.name
         ),
-        _react2.default.createElement('br', null),
         _react2.default.createElement(
             'p',
             null,
@@ -29538,7 +29537,6 @@ var Comment = function Comment(props) {
             _react2.default.createElement('br', null),
             props.email
         ),
-        _react2.default.createElement('br', null),
         _react2.default.createElement(
             'p',
             null,
