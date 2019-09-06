@@ -29278,7 +29278,7 @@ var _Course2 = _interopRequireDefault(_Course);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Dish = function Dish(props) {
-    var _useState = (0, _react.useState)(props.jsonData),
+    var _useState = (0, _react.useState)(props.jsonData || jsonData),
         _useState2 = _slicedToArray(_useState, 2),
         courses = _useState2[0],
         setCourses = _useState2[1];
@@ -29429,7 +29429,7 @@ var Form = function Form(props) {
                 'Nafn:'
             ),
             _react2.default.createElement('br', null),
-            _react2.default.createElement('input', { name: 'name', id: 'name', type: 'text', onKeyUp: getName }),
+            _react2.default.createElement('input', { name: 'name', id: 'name', type: 'text', onKeyUp: getName, required: true }),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
                 'label',
@@ -29437,7 +29437,7 @@ var Form = function Form(props) {
                 'Netfang:'
             ),
             _react2.default.createElement('br', null),
-            _react2.default.createElement('input', { name: 'email', id: 'email', type: 'text', onKeyUp: getEmail }),
+            _react2.default.createElement('input', { name: 'email', id: 'email', type: 'email', onKeyUp: getEmail, required: true }),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
                 'label',
@@ -29446,6 +29446,41 @@ var Form = function Form(props) {
             ),
             _react2.default.createElement('br', null),
             _react2.default.createElement('input', { name: 'comment', id: 'comment', type: 'text', onKeyUp: getComment }),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+                'p',
+                null,
+                'Einkunn:'
+            ),
+            _react2.default.createElement(
+                'select',
+                { required: true },
+                _react2.default.createElement(
+                    'option',
+                    { value: '1' },
+                    '1'
+                ),
+                _react2.default.createElement(
+                    'option',
+                    { value: '2' },
+                    '2'
+                ),
+                _react2.default.createElement(
+                    'option',
+                    { value: '3', selected: true },
+                    '3'
+                ),
+                _react2.default.createElement(
+                    'option',
+                    { value: '4' },
+                    '4'
+                ),
+                _react2.default.createElement(
+                    'option',
+                    { value: '5' },
+                    '5'
+                )
+            ),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
                 'button',

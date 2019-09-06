@@ -3,7 +3,7 @@ import Course from './Course';
 
 
 const Dish = (props)=> {
-    const [courses, setCourses] = useState(props.jsonData);
+    const [courses, setCourses] = useState(props.jsonData || jsonData);
    
     return (
         <div>

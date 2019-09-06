@@ -1,0 +1,1 @@
+require("gzip-loader!./file.js.gz");

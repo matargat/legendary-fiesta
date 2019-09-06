@@ -5,14 +5,18 @@ import ReactDOMServer from 'react-dom/server';
 import fetch from 'isomorphic-fetch';
 import csurf from 'csurf';
 import session from 'express-session';
-import bodyParser from 'body-parser'
+import bodyParser from 'body-parser';
 import Dish from './src/Dish';
 import Details from './src/Details';
 import {check, validationResult} from 'express-validator'; 
+import compression from 'compression';
 
 const app = express();
 const csrfProtection = csurf({ cookie: false })
 
+app.use(compression({
+    filter: function () { return true; }
+  }));
 app.use(express.static('./dist'));
 app.use(
     bodyParser.urlencoded({extended:false})
@@ -20,6 +24,13 @@ app.use(
 app.use(session({
     secret: 'Kaffi er gott'
   }))
+
+
+// app.use((req, res, next)=> {
+//     res.set('Cache-Control', 'public, max-age=31557600'); // one year
+//     res.set('Content-Encoding', 'gzip')
+//     next()
+// })
 
 let menuItems = [];
 
@@ -80,10 +91,11 @@ app.get("/", csrfProtection, (req, res) => {
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
                 <title>Document</title>
+                <script>const jsonData = ${JSON.stringify(json)}</script>
             </head>
             <body>
                 <div id="main">${markup}</div>
-                <script src="dist/main.js"></script>
+                <script src="/main.js"></script>
                 
             </body>
             </html>`
@@ -134,7 +146,7 @@ app.post('/comments/:title', [
                 </head>
                 <body>
                     <div id="main">${markup}</div>
-                    <script src="dist/main.js"></script>
+                    <script src="/main.js"></script>
                     
                 </body>
                 </html>`
@@ -170,7 +182,7 @@ app.get('/comments/:title', (req, res) => {
                 </head>
                 <body>
                     <div id="main">${markup}</div>
-                    <script src="dist/main.js"></script>
+                    <script src="/main.js"></script>
                     
                 </body>
                 </html>`
