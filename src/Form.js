@@ -28,21 +28,20 @@ const Form = (props) => {
     const getComment = e => {
         setComment({ ...comment, comment: e.target.value })
     };
-    // const getRating = e => {
-    //     setComment({...comment, rating: e.target.value})
-    // }
-    console.log(emailError);
-    // if(props.errors){
-    //     props.errors.forEach((error)=>{
-    //         if(error.param === "email") {
-    //             setEmailError(error)
-    //         }
-    //         else if(error.param === "comment"){
-    //             setCommentError(error)
-    //         }
-    //     })
-    // }
+
+    console.log("emailError", emailError);
+    if(props.errors){
+        props.errors.forEach((error)=>{
+            if(error.param === "email" && !emailError.param) {
+                setEmailError(error)
+            }
+            else if(error.param === "comment" && !commentError.param){
+                setCommentError(error)
+            }
+        })
+    }
     console.log(props.errors);
+    console.log("emailError", emailError);
     return (
 
         <div>
@@ -57,14 +56,14 @@ const Form = (props) => {
                 <label htmlFor="email">Netfang:</label><br />
                 <input name="email" id="email" type="email" onKeyUp={getEmail} required></input><br />
 
-                {/* <p>{emailError? props.error:null}</p> */}
+                <p>{emailError? emailError.msg:null}</p>
 
                 <label htmlFor="comment">Athugasemd:</label><br />
                 <input name="comment" id="comment" type="text" onKeyUp={getComment}></input><br />
 
-                {/* <p>{commentError? props.error:null}</p> */}
+                <p>{commentError? commentError.msg:null}</p>
                 <p>Einkunn:</p>
-                <select required>
+                <select required >
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3" selected>3</option>
@@ -77,8 +76,9 @@ const Form = (props) => {
             </form>
 
         </div>
+        
     )
-
+        
 }
 
 

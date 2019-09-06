@@ -29400,21 +29400,19 @@ var Form = function Form(props) {
     var getComment = function getComment(e) {
         setComment(_extends({}, comment, { comment: e.target.value }));
     };
-    // const getRating = e => {
-    //     setComment({...comment, rating: e.target.value})
-    // }
-    console.log(emailError);
-    // if(props.errors){
-    //     props.errors.forEach((error)=>{
-    //         if(error.param === "email") {
-    //             setEmailError(error)
-    //         }
-    //         else if(error.param === "comment"){
-    //             setCommentError(error)
-    //         }
-    //     })
-    // }
+
+    console.log("emailError", emailError);
+    if (props.errors) {
+        props.errors.forEach(function (error) {
+            if (error.param === "email" && !emailError.param) {
+                setEmailError(error);
+            } else if (error.param === "comment" && !commentError.param) {
+                setCommentError(error);
+            }
+        });
+    }
     console.log(props.errors);
+    console.log("emailError", emailError);
     return _react2.default.createElement(
         'div',
         null,
@@ -29440,6 +29438,11 @@ var Form = function Form(props) {
             _react2.default.createElement('input', { name: 'email', id: 'email', type: 'email', onKeyUp: getEmail, required: true }),
             _react2.default.createElement('br', null),
             _react2.default.createElement(
+                'p',
+                null,
+                emailError ? emailError.msg : null
+            ),
+            _react2.default.createElement(
                 'label',
                 { htmlFor: 'comment' },
                 'Athugasemd:'
@@ -29447,6 +29450,11 @@ var Form = function Form(props) {
             _react2.default.createElement('br', null),
             _react2.default.createElement('input', { name: 'comment', id: 'comment', type: 'text', onKeyUp: getComment }),
             _react2.default.createElement('br', null),
+            _react2.default.createElement(
+                'p',
+                null,
+                commentError ? commentError.msg : null
+            ),
             _react2.default.createElement(
                 'p',
                 null,
